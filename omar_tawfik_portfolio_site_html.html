@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Omar Tawfik — Data Scientist</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:      #090e1a;
+      --navy-light:#0d1526;
+      --slate:     #8892b0;
+      --slate-light:#a8b2d8;
+      --white:     #e6f1ff;
+      --teal:      #38d9a9;
+      --teal-dim:  #1a6b53;
+      --teal-glow: rgba(56,217,169,.15);
+      --font-mono: 'DM Mono', monospace;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --nav-width: 340px;
+      --transition: all .25s cubic-bezier(.645,.045,.355,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--navy); color: var(--slate); font-family: var(--font-body); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+    ::selection { background: var(--teal-dim); color: var(--white); }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: var(--teal-dim); border-radius: 3px; }
+
+    .wrapper { display: flex; min-height: 100vh; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .sidebar { position: sticky; top: 0; height: 100vh; width: var(--nav-width); min-width: var(--nav-width); display: flex; flex-direction: column; justify-content: space-between; padding: 80px 0; }
+    .name { font-family: var(--font-display); font-size: clamp(32px, 4vw, 48px); font-weight: 800; color: var(--white); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .title { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--white); margin-bottom: 18px; }
+    .tagline { font-size: 14px; max-width: 240px; color: var(--slate); line-height: 1.6; }
+
+    .nav { margin-top: 56px; display: flex; flex-direction: column; gap: 6px; }
+    .nav a { display: flex; align-items: center; gap: 16px; text-decoration: none; color: var(--slate); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 0; transition: var(--transition); }
+    .nav a .nav-line { display: block; height: 1px; width: 32px; background: var(--slate); transition: var(--transition); }
+    .nav a:hover, .nav a.active { color: var(--white); }
+    .nav a:hover .nav-line, .nav a.active .nav-line { width: 64px; background: var(--teal); }
+
+    .socials { display: flex; gap: 18px; }
+    .socials a { color: var(--slate); text-decoration: none; transition: var(--transition); }
+    .socials a:hover { color: var(--teal); transform: translateY(-2px); }
+    .socials svg { width: 20px; height: 20px; fill: currentColor; }
+
+    .main { flex: 1; padding: 80px 0 80px 80px; max-width: 720px; }
+    section { margin-bottom: 100px; scroll-margin-top: 80px; }
+    .section-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .section-label::after { content: ''; display: block; height: 1px; width: 60px; background: var(--teal-dim); }
+
+    #about p { font-size: 16px; color: var(--slate); line-height: 1.8; margin-bottom: 16px; }
+    #about p:first-of-type { color: var(--slate-light); }
+    #about strong { color: var(--teal); font-weight: 500; }
+
+    /* Experience */
+    .exp-item {
+      display: block;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.06);
+      background: transparent;
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .exp-item + .exp-item { border-top: 1px solid rgba(255,255,255,.06); }
+    .exp-item:hover { background: var(--navy-light); border-color: rgba(56,217,169,.16); transform: translateX(2px); }
+
+    .exp-item summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 150px 1fr 20px;
+      gap: 28px;
+      align-items: start;
+    }
+    .exp-item summary::-webkit-details-marker { display: none; }
+
+    .exp-summary-main { padding-top: 2px; }
+    .exp-toggle {
+      width: 20px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--slate);
+      transition: var(--transition);
+      margin-top: 2px;
+    }
+    .exp-item[open] .exp-toggle { color: var(--teal); transform: rotate(180deg); }
+
+    .exp-content-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows .35s cubic-bezier(.645,.045,.355,1);
+    }
+    .exp-item[open] .exp-content-wrap { grid-template-rows: 1fr; }
+    .exp-content { overflow: hidden; padding: 0 20px 18px; }
+
+    .exp-content .tag-list { margin-top: 10px; }
+    .exp-content .tag { padding: 3px 9px; }
+
+    .exp-item summary:focus-visible {
+      outline: 2px solid rgba(56,217,169,.35);
+      outline-offset: 2px;
+      border-radius: 10px;
+    }
+    .exp-date { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--slate); text-transform: uppercase; padding-top: 4px; white-space: nowrap; }
+    .exp-role { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .exp-company { font-size: 14px; color: var(--teal); margin-bottom: 12px; font-weight: 500; }
+
+    .exp-desc {
+      margin: 10px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+      color: var(--slate);
+      font-size: 14px;
+      line-height: 1.7;
+      list-style: none;
+    }
+    .exp-desc li { position: relative; padding-left: 18px; }
+    .exp-desc li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--teal);
+      box-shadow: 0 0 0 4px var(--teal-glow);
+    }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--teal); background: var(--teal-glow); border: 1px solid rgba(56,217,169,.2); border-radius: 4px; padding: 3px 10px; }
+
+    /* Projects */
+    .project-grid { display: grid; gap: 20px; }
+    .project-card { position: relative; padding: 28px; border-radius: 10px; background: var(--navy-light); border: 1px solid rgba(255,255,255,.06); transition: var(--transition); overflow: hidden; }
+    .project-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--teal-glow), transparent 60%); opacity: 0; transition: var(--transition); }
+    .project-card:hover { border-color: rgba(56,217,169,.25); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    .project-card:hover::before { opacity: 1; }
+    .project-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .project-icon { width: 42px; height: 42px; border-radius: 8px; background: var(--teal-glow); border: 1px solid rgba(56,217,169,.2); display: flex; align-items: center; justify-content: center; }
+    .project-icon svg { width: 22px; height: 22px; stroke: var(--teal); fill: none; stroke-width: 1.8; }
+    .project-link-icon { color: var(--slate); transition: var(--transition); text-decoration: none; display: inline-flex; }
+    .project-card:hover .project-link-icon { color: var(--teal); }
+    .project-link-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .project-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .project-desc { font-size: 14px; line-height: 1.75; color: var(--slate); margin-bottom: 14px; }
+
+    .project-impact {
+      list-style: none;
+      margin: 0 0 18px;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--slate-light);
+    }
+    .project-impact li { position: relative; padding-left: 16px; }
+    .project-impact li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--teal);
+    }
+
+    /* Featured project metrics */
+    .project-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 6px 0 16px;
+    }
+    .metric {
+      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.02);
+      border-radius: 10px;
+      padding: 12px 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    .metric::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--teal-glow), transparent 65%);
+      opacity: .35;
+      pointer-events: none;
+    }
+    .metric-num {
+      position: relative;
+      font-family: var(--font-display);
+      font-weight: 800;
+      color: var(--white);
+      font-size: 18px;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .metric-label {
+      position: relative;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--slate);
+      line-height: 1.3;
+    }
+    @media (max-width: 900px) {
+      .project-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    /* Project media (screenshot + mini-architecture diagram) */
+    .project-media { margin: 14px 0 18px; }
+    .media-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 14px; align-items: start; }
+    .media-shot { border: 1px solid rgba(255,255,255,.06); border-radius: 12px; overflow: hidden; background: rgba(255,255,255,.02); }
+    .media-shot img { display: block; width: 100%; height: auto; transform: scale(1); transition: var(--transition); }
+    .project-card:hover .media-shot img { transform: scale(1.01); }
+    .media-shot figcaption {
+      padding: 10px 12px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--slate);
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .media-diagram { border: 1px solid rgba(255,255,255,.06); border-radius: 12px; background: rgba(255,255,255,.02); padding: 12px; overflow: hidden; }
+    .diagram-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .diagram-title::after { content: ''; height: 1px; flex: 1; background: rgba(56,217,169,.18); }
+    .pipeline-svg { width: 100%; height: auto; }
+    @media (max-width: 900px) {
+      .media-grid { grid-template-columns: 1fr; }
+    }
+
+    .skills-container { display: flex; flex-direction: column; gap: 28px; }
+    .skill-group-title { font-family: var(--font-mono); font-size: 11px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+
+    .cursor-glow { position: fixed; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(56,217,169,.08) 0%, transparent 70%); pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: left .12s, top .12s; }
+    .availability { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--teal); margin-bottom: 20px; }
+    .availability-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: pulse 2.4s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.8); } }
+
+    .resume-btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); text-decoration: none; border: 1px solid var(--teal); border-radius: 4px; padding: 12px 20px; margin-top: 16px; transition: var(--transition); }
+    .resume-btn:hover { background: var(--teal-glow); transform: translateY(-2px); }
+
+    .footer { font-family: var(--font-mono); font-size: 12px; color: var(--slate); padding-top: 20px; border-top: 1px solid rgba(255,255,255,.06); margin-top: 80px; }
+    .footer span { color: var(--teal); }
+
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .wrapper { flex-direction: column; padding: 0 24px; }
+      .sidebar { position: static; height: auto; width: 100%; min-width: unset; padding: 60px 0 40px; }
+      .nav { flex-direction: row; flex-wrap: wrap; margin-top: 32px; }
+      .nav a .nav-line { display: none; }
+      .main { padding: 0 0 80px; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor-glow" id="glow"></div>
+<div class="wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="availability"><span class="availability-dot"></span>Available for opportunities</div>
+      <h1 class="name">Omar<br>Tawfik</h1>
+      <p class="title">Labor Economist &amp; Data Scientist</p>
+      <p class="tagline">I build data pipelines, forecasting models, and AI systems that turn complex datasets into decisions.</p>
+      <nav class="nav">
+        <a href="#about" class="active"><span class="nav-line"></span>About</a>
+        <a href="#experience"><span class="nav-line"></span>Experience</a>
+        <a href="#projects"><span class="nav-line"></span>Projects</a>
+        <a href="#skills"><span class="nav-line"></span>Skills</a>
+      </nav>
+      <a class="resume-btn" href="./Omar_Tawfik_Resume.pdf" download target="_blank" rel="noopener noreferrer" aria-label="Download resume (PDF)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Resume
+      </a>
+    </div>
+    <div class="socials">
+      <a href="https://github.com/omartawfik7" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/omar-tawfik123/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="/cdn-cgi/l/email-protection#bad5d7dbc8dfc9c9dbd789838afaddd7dbd3d694d9d5d7" aria-label="Email">
+        <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section id="about" class="fade-in">
+      <div class="section-label">About</div>
+      <p><strong>Data Scientist with 4+ years of progressive experience</strong> in analytics across government, consulting, and supply chain industries. Seeking roles in Data Science, Analytics, or Business Analysis where I can drive measurable business impact through data.</p>
+      <p>Proficient in <strong>SQL, Python, Tableau, and Machine Learning</strong> techniques including NLP, regression, classification, clustering, and time-series forecasting. I specialize in building end-to-end data systems — from pipeline architecture to predictive modeling to executive-ready dashboards.</p>
+      <p>Notable achievements include developing an NLP-powered fraud detection model that significantly improved detection accuracy in a cloud-based environment, and architecting a SQL + Azure data migration system that increased productivity 10x and improved data accuracy by 50%. I am passionate about delivering data-driven insights that solve complex business and policy problems.</p>
+    </section>
+
+    <section id="experience" class="fade-in">
+      <div class="section-label">Experience</div>
+
+      <details class="exp-item" open>
+        <summary>
+          <span class="exp-date">Jan 2026 — Present</span>
+          <div class="exp-summary-main">
+            <div class="exp-role">Labor Economist / Data Scientist</div>
+            <div class="exp-company">DC Government — Office of Labor Relations &amp; Collective Bargaining</div>
+          </div>
+          <span class="exp-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
+          </span>
+        </summary>
+        <div class="exp-content-wrap">
+          <div class="exp-content">
+            <ul class="exp-desc">
+              <li>Analyze labor market trends, wages, and employee benefits using econometrics and financial modeling to support compensation and workforce policy decisions.</li>
+              <li>Build forecasting, machine learning, and time-series models to evaluate employment trends and assess budgetary impact of salary adjustments, COLA, and benefit changes.</li>
+              <li>Lead compensation benchmarking and pay-equity analyses using large labor datasets to inform collective bargaining strategies.</li>
+              <li>Design and maintain interactive Tableau and Power BI dashboards translating complex economic insights into executive-ready guidance.</li>
+              <li>Automate labor-data pipelines using Python, SQL, and Spark to significantly accelerate insight delivery and improve analytical accuracy.</li>
+              <li>Partner with HR, finance, and policy teams to develop data-driven recommendations on compensation structures and workforce sustainability.</li>
+            </ul>
+            <div class="tag-list"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Time-Series</span><span class="tag">Econometrics</span><span class="tag">Tableau</span><span class="tag">Power BI</span><span class="tag">Spark</span></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="exp-item">
+        <summary>
+          <span class="exp-date">Jul 2023 — Nov 2024</span>
+          <div class="exp-summary-main">
+            <div class="exp-role">Data Scientist</div>
+            <div class="exp-company">Booz Allen Hamilton</div>
+          </div>
+          <span class="exp-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
+          </span>
+        </summary>
+        <div class="exp-content-wrap">
+          <div class="exp-content">
+            <ul class="exp-desc">
+              <li>Architected large-scale SQL + Azure data migration system, improving task force productivity 10x and increasing data accuracy by 50%.</li>
+              <li>Developed NLP-based fraud detection model for product reviews, improving detection reliability in a cloud-based ML environment.</li>
+              <li>Reengineered Veterans Crisis Line Salesforce platform, reducing response times by 35% and expanding support capacity by 5,000 veterans monthly.</li>
+              <li>Managed a team of six, building interactive dashboards with Python, Tableau, and Apache Spark for large-scale data processing.</li>
+            </ul>
+            <div class="tag-list"><span class="tag">Azure</span><span class="tag">SQL</span><span class="tag">Python</span><span class="tag">NLP</span><span class="tag">Tableau</span><span class="tag">Salesforce</span><span class="tag">Spark</span></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="exp-item">
+        <summary>
+          <span class="exp-date">Apr 2022 — Jul 2023</span>
+          <div class="exp-summary-main">
+            <div class="exp-role">Supply Chain Data Analyst</div>
+            <div class="exp-company">Karavan Imports LLC</div>
+          </div>
+          <span class="exp-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
+          </span>
+        </summary>
+        <div class="exp-content-wrap">
+          <div class="exp-content">
+            <ul class="exp-desc">
+              <li>Led Global Flow Optimization project integrating real-time logistics and historical data, improving on-time delivery by 28%.</li>
+              <li>Built Spark-based pipelines processing 50M+ monthly records across 32 e-commerce distributors and 5 wholesale partners.</li>
+              <li>Automated SQL and Python dashboards, reducing reporting time by 75% and increasing cross-team visibility.</li>
+              <li>Developed TensorFlow demand forecasting models reducing holding costs by 35% and optimizing warehouse utilization.</li>
+              <li>Applied regression, classification, and clustering to improve supplier segmentation and reduce procurement cycle time by 15%.</li>
+            </ul>
+            <div class="tag-list"><span class="tag">Spark</span><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">TensorFlow</span><span class="tag">Forecasting</span><span class="tag">Clustering</span></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="exp-item">
+        <summary>
+          <span class="exp-date">Mar 2020 — Jan 2022</span>
+          <div class="exp-summary-main">
+            <div class="exp-role">Business Analyst Intern</div>
+            <div class="exp-company">GEMS Inc.</div>
+          </div>
+          <span class="exp-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
+          </span>
+        </summary>
+        <div class="exp-content-wrap">
+          <div class="exp-content">
+            <ul class="exp-desc">
+              <li>Designed Tableau and Power BI dashboards improving process efficiency by 25% and strengthening cross-department collaboration.</li>
+              <li>Extracted and normalized SQL/NoSQL datasets, automating workflows and reducing manual processing time by 40%.</li>
+              <li>Presented executive-level reports and visualizations, increasing stakeholder satisfaction by 30%.</li>
+              <li>Conducted statistical analysis in Python and SQL identifying performance and attrition trends, influencing $200K+ in strategic decisions.</li>
+            </ul>
+            <div class="tag-list"><span class="tag">Tableau</span><span class="tag">Power BI</span><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Analytics</span></div>
+          </div>
+        </div>
+      </details>
+
+    </section>
+
+    <section id="projects" class="fade-in">
+      <div class="section-label">Projects</div>
+      <div class="project-grid">
+
+        <div class="project-card" id="featured-wage-sim">
+          <div class="project-top">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 19V5" />
+                <path d="M20 19V5" />
+                <path d="M4 12h16" />
+                <path d="M8 9l2 3 3-6 3 7 2-4" />
+              </svg>
+            </div>
+            <div style="display:flex; gap:12px;">
+              <a class="project-link-icon" href="https://github.com/omartawfik7/Wage-Simulator" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+              <a class="project-link-icon" href="https://github.com/omartawfik7/Wage-Simulator#readme" target="_blank" rel="noopener noreferrer" aria-label="View case study / README">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="project-title">Wage Policy Impact Simulation Engine</div>
+          <div class="project-metrics" data-counters>
+            <div class="metric"><div class="metric-num" data-counter data-value="5000" data-suffix=" sims">0</div><div class="metric-label">Monte Carlo</div></div>
+            <div class="metric"><div class="metric-num" data-counter data-value="20" data-prefix="$" data-suffix="M P95">0</div><div class="metric-label">Fiscal Exposure</div></div>
+            <div class="metric"><div class="metric-num" data-counter data-value="80" data-suffix=" units">0</div><div class="metric-label">Bargaining Units</div></div>
+            <div class="metric"><div class="metric-num" data-counter data-value="37000" data-suffix=" employees">0</div><div class="metric-label">Covered Workforce</div></div>
+          </div>
+          <p class="project-desc">An advanced causal-inference and risk simulation platform for wage policy analysis. Combines DiD (TWFE), Synthetic Control, and Propensity Score Matching with ensemble averaging, then runs 5,000-iteration Monte Carlo to quantify fiscal exposure (P5/P95) and employment impacts across elasticity scenarios — delivered through an interactive Flask dashboard.</p>
+          <ul class="project-impact">
+            <li>Simulated <strong>$9M–$20M annual fiscal exposure</strong> using 5,000-iteration Monte Carlo with P5/P95 quantile risk bounds.</li>
+            <li>Modeled causal wage effects across <strong>80 bargaining units</strong> using DiD, Synthetic Control, and PSM with ensemble averaging to reduce estimation variance.</li>
+            <li>Quantified employment sensitivity across <strong>8 labor-demand elasticity scenarios</strong> for <strong>37,000</strong> covered employees.</li>
+          </ul>
+          <div class="tag-list"><span class="tag">Causal Inference</span><span class="tag">DiD (TWFE)</span><span class="tag">Synthetic Control</span><span class="tag">PSM</span><span class="tag">Event Study</span><span class="tag">Monte Carlo</span><span class="tag">Flask</span><span class="tag">statsmodels</span><span class="tag">linearmodels</span><span class="tag">Chart.js</span></div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-top">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 4h16v16H4z" />
+                <path d="M8 8h8" />
+                <path d="M8 12h8" />
+                <path d="M8 16h6" />
+                <path d="M6 20l2-2" />
+                <path d="M18 20l-2-2" />
+              </svg>
+            </div>
+            <div style="display:flex; gap:12px;">
+              <a class="project-link-icon" href="https://github.com/omartawfik7/Amazon-Product-Review-Detector-w-NLP-ML" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+              <a class="project-link-icon" href="https://github.com/omartawfik7/Amazon-Product-Review-Detector-w-NLP-ML/blob/main/README.md" target="_blank" rel="noopener noreferrer" aria-label="View case study / README">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="project-title">ReviewGuard — Fraudulent Review Detection Engine</div>
+
+          <div class="project-metrics" data-counters id="reviewguard-metrics">
+            <div class="metric"><div class="metric-num" data-counter data-value="90" data-suffix=".68%">0</div><div class="metric-label">Accuracy</div></div>
+            <div class="metric"><div class="metric-num" data-counter data-value="18" data-suffix=" KPIs">0</div><div class="metric-label">Engineered Features</div></div>
+            <div class="metric"><div class="metric-num" data-counter data-value="4" data-suffix=" models">0</div><div class="metric-label">Classifiers Compared</div></div>
+            <div class="metric"><div class="metric-num" data-counter data-value="40" data-suffix="K reviews">0</div><div class="metric-label">Training Data</div></div>
+          </div>
+
+          <p class="project-desc">ReviewGuard is a full-stack data science and machine learning application that detects fraudulent Amazon product reviews using natural language processing and supervised learning. The system covers the complete ML workflow — automated dataset ingestion via the Kaggle API, a multi-stage NLTK preprocessing pipeline, behavioral feature engineering, multi-model training with cross-validation, REST API deployment, and an interactive editorial-style Flask dashboard with real-time Chart.js analytics.</p>
+
+          <ul class="project-impact">
+            <li><strong>ETL pipeline:</strong> Built a full NLTK preprocessing chain including lowercasing, URL and HTML stripping, stopword removal (with negation preservation), Porter Stemming, and WordNet Lemmatization — producing clean, consistent vocabulary across 40,000 real Amazon reviews ingested automatically via <strong>kagglehub</strong>.</li>
+            <li><strong>18 behavioral + linguistic KPIs</strong> engineered from raw text: sentiment extremity (VADER compound), extreme superlative word density, capitalization ratio, lexical diversity (type-token ratio), exclamation count, punctuation ratio, and a <strong>rating–sentiment mismatch gap</strong> that flags reviews where star rating contradicts written tone — concatenated with a <strong>10,000-feature TF-IDF</strong> unigram/bigram matrix using sublinear TF scaling.</li>
+            <li>Trained and evaluated <strong>4 classifiers</strong> — Logistic Regression, Random Forest (200 estimators), Linear SVM, and Gradient Boosting — with ROC-AUC, weighted F1, precision, recall, and <strong>5-fold stratified cross-validation</strong>; auto-selected and persisted the best model artifacts via pickle for zero-latency inference.</li>
+            <li>Achieved <strong>90.68% accuracy</strong> and <strong>90.62 weighted F1-score</strong> on a stratified held-out test set; Flask REST API returns prediction label, fake/genuine probability scores, top TF-IDF signal terms, and per-signal fraud severity breakdowns in real time.</li>
+            <li>Deployed an <strong>editorial-style interactive dashboard</strong> (named ReviewGuard) featuring a live news ticker, model comparison card grid, animated confusion matrix, probability bars, feature value visualization, and product image mosaic — built with vanilla HTML/CSS/JS and Chart.js with zero external UI frameworks.</li>
+          </ul>
+
+          <div class="project-media">
+            <div class="media-grid">
+              <figure class="media-shot">
+                <img src="./assets/reviewguard-ui.png" alt="ReviewGuard dashboard screenshot" loading="lazy" />
+                <figcaption>UI preview (Detector view)</figcaption>
+              </figure>
+
+              <div class="media-diagram">
+                <div class="diagram-title">End-to-End Pipeline</div>
+                <svg class="pipeline-svg" viewBox="0 0 640 330" role="img" aria-label="ReviewGuard pipeline diagram">
+                  <g font-family="DM Mono, monospace" font-size="12" fill="#a8b2d8">
+                    <rect x="18" y="28" width="170" height="58" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.10)"/>
+                    <text x="34" y="56">Kaggle Ingestion</text>
+                    <text x="34" y="74" fill="#8892b0">kagglehub / API</text>
+
+                    <rect x="235" y="28" width="170" height="58" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.10)"/>
+                    <text x="251" y="56">Preprocess</text>
+                    <text x="251" y="74" fill="#8892b0">clean • tokenize</text>
+
+                    <rect x="452" y="28" width="170" height="58" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.10)"/>
+                    <text x="468" y="56">Feature Build</text>
+                    <text x="468" y="74" fill="#8892b0">18 KPIs</text>
+
+                    <rect x="18" y="136" width="170" height="58" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.10)"/>
+                    <text x="34" y="164">TF-IDF</text>
+                    <text x="34" y="182" fill="#8892b0">10k uni/bi-grams</text>
+
+                    <rect x="235" y="136" width="170" height="58" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.10)"/>
+                    <text x="251" y="164">Model Train</text>
+                    <text x="251" y="182" fill="#8892b0">4 classifiers</text>
+
+                    <rect x="452" y="136" width="170" height="58" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.10)"/>
+                    <text x="468" y="164">Evaluate</text>
+                    <text x="468" y="182" fill="#8892b0">F1 • AUC • CV</text>
+
+                    <rect x="18" y="244" width="170" height="58" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.10)"/>
+                    <text x="34" y="272">Artifacts</text>
+                    <text x="34" y="290" fill="#8892b0">pickle registry</text>
+
+                    <rect x="235" y="244" width="170" height="58" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.10)"/>
+                    <text x="251" y="272">Flask API</text>
+                    <text x="251" y="290" fill="#8892b0">/predict • /metrics</text>
+
+                    <rect x="452" y="244" width="170" height="58" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.10)"/>
+                    <text x="468" y="272">Dashboard</text>
+                    <text x="468" y="290" fill="#8892b0">Chart.js UI</text>
+                  </g>
+
+                  <g stroke="rgba(56,217,169,.45)" stroke-width="2" fill="none">
+                    <path d="M188 57H235"/>
+                    <path d="M405 57H452"/>
+                    <path d="M103 86v38"/>
+                    <path d="M320 86v38"/>
+                    <path d="M537 86v38"/>
+                    <path d="M188 165H235"/>
+                    <path d="M405 165H452"/>
+                    <path d="M103 194v38"/>
+                    <path d="M320 194v38"/>
+                    <path d="M537 194v38"/>
+                    <path d="M188 273H235"/>
+                    <path d="M405 273H452"/>
+                  </g>
+
+                  <g fill="rgba(56,217,169,.65)">
+                    <polygon points="235,57 226,52 226,62"/>
+                    <polygon points="452,57 443,52 443,62"/>
+                    <polygon points="235,165 226,160 226,170"/>
+                    <polygon points="452,165 443,160 443,170"/>
+                    <polygon points="235,273 226,268 226,278"/>
+                    <polygon points="452,273 443,268 443,278"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tag-list"><span class="tag">NLP</span><span class="tag">Fraud Detection</span><span class="tag">TF-IDF</span><span class="tag">scikit-learn</span><span class="tag">NLTK</span><span class="tag">VADER</span><span class="tag">Flask</span><span class="tag">Chart.js</span><span class="tag">Kaggle API</span></div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-top">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+              </svg>
+            </div>
+          </div>
+          <div class="project-title">Sudoku Solver Web App</div>
+          <p class="project-desc">Converted a Python sudoku-solving algorithm into a full-stack web application. An interactive 9x9 grid (HTML/CSS/jQuery) lets users click cells to enter digits; solving logic runs via a Flask REST API using recursive backtracking, with results smoothly animated back into the board via AJAX.</p>
+          <div class="tag-list"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">REST API</span><span class="tag">JavaScript</span><span class="tag">jQuery</span><span class="tag">Node.js</span><span class="tag">Express</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="skills" class="fade-in">
+      <div class="section-label">Skills</div>
+      <div class="skills-container">
+        <div class="skill-group">
+          <div class="skill-group-title">Languages &amp; Query</div>
+          <div class="tag-list"><span class="tag">Python</span><span class="tag">R</span><span class="tag">SQL</span><span class="tag">JavaScript</span><span class="tag">C#</span><span class="tag">Scala</span></div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Machine Learning &amp; AI</div>
+          <div class="tag-list"><span class="tag">PyTorch</span><span class="tag">TensorFlow</span><span class="tag">Scikit-learn</span><span class="tag">YOLOv8</span><span class="tag">NLP</span><span class="tag">spaCy</span><span class="tag">Transformers</span><span class="tag">Computer Vision</span></div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Data &amp; Analytics</div>
+          <div class="tag-list"><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">PySpark</span><span class="tag">Tableau</span><span class="tag">Power BI</span><span class="tag">Time Series</span><span class="tag">Statistical Modeling</span></div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Cloud &amp; Infrastructure</div>
+          <div class="tag-list"><span class="tag">Azure</span><span class="tag">AWS</span><span class="tag">BigQuery</span><span class="tag">Databricks</span><span class="tag">Snowflake</span><span class="tag">Docker</span></div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Tools &amp; Frameworks</div>
+          <div class="tag-list"><span class="tag">Flask</span><span class="tag">Node.js</span><span class="tag">Git</span><span class="tag">Salesforce</span><span class="tag">PostgreSQL</span><span class="tag">SQLite</span><span class="tag">Tesseract OCR</span></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">Built by <span>Omar Tawfik</span></footer>
+
+  </main>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const glow = document.getElementById('glow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  });
+
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('.nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector('.nav a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const fadeObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  fadeEls.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) { el.classList.add('visible'); }
+    else { fadeObserver.observe(el); }
+  });
+
+  // Experience accordion behavior: open one at a time
+  const expItems = document.querySelectorAll('details.exp-item');
+  expItems.forEach(item => {
+    item.addEventListener('toggle', () => {
+      if (!item.open) return;
+      expItems.forEach(other => {
+        if (other !== item) other.open = false;
+      });
+    });
+  });
+
+  // Project metric counters (animate when featured project enters view)
+  const formatNumber = (n) => new Intl.NumberFormat('en-US').format(n);
+  const animateCounter = (el) => {
+    const end = Number(el.dataset.value || 0);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const decimals = Number(el.dataset.decimals || 0);
+
+    const duration = 900;
+    const startTime = performance.now();
+
+    const step = (now) => {
+      const t = Math.min(1, (now - startTime) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = end * eased;
+
+      const display = decimals > 0 ? current.toFixed(decimals) : Math.round(current);
+      const formatted = decimals > 0 ? display : formatNumber(display);
+      el.textContent = `${prefix}${formatted}${suffix}`;
+
+      if (t < 1) requestAnimationFrame(step);
+    };
+
+    requestAnimationFrame(step);
+  };
+
+  const featured = document.getElementById('featured-wage-sim');
+  if (featured) {
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const counters = featured.querySelectorAll('[data-counter]');
+        counters.forEach(c => {
+          if (c.dataset.animated === 'true') return;
+          c.dataset.animated = 'true';
+          animateCounter(c);
+               });
+      counterObserver.disconnect();
+      });
+    }, { threshold: 0.35 });
+    counterObserver.observe(featured);
+  }
+
+  // ReviewGuard metrics counters
+  const reviewguard = document.getElementById('reviewguard-metrics');
+  if (reviewguard) {
+    const rgObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const counters = reviewguard.querySelectorAll('[data-counter]');
+        counters.forEach(c => {
+          if (c.dataset.animated === 'true') return;
+          c.dataset.animated = 'true';
+          animateCounter(c);
+        });
+        rgObserver.disconnect();
+      });
+    }, { threshold: 0.35 });
+    rgObserver.observe(reviewguard);
+  }
+
+</script>
+</body>
+</html>
