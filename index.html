@@ -255,6 +255,33 @@
     .skills-container { display: flex; flex-direction: column; gap: 28px; }
     .skill-group-title { font-family: var(--font-mono); font-size: 11px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
 
+    .stat-strip { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-top: 28px; }
+    .stat-chip { border: 1px solid rgba(255,255,255,.08); background: var(--navy-light); border-radius: 12px; padding: 14px 12px; text-align: center; transition: var(--transition); }
+    .stat-chip:hover { border-color: rgba(56,217,169,.3); transform: translateY(-2px); }
+    .stat-num { font-family: var(--font-display); font-weight: 700; color: var(--teal); font-size: clamp(16px, 2.2vw, 22px); line-height: 1.2; margin-bottom: 4px; white-space: nowrap; }
+    .stat-label { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); line-height: 1.3; }
+    @media (max-width: 900px) { .stat-strip { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .filter-btn { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); background: transparent; border: 1px solid rgba(255,255,255,.12); border-radius: 999px; padding: 6px 14px; cursor: pointer; transition: var(--transition); }
+    .filter-btn:hover { color: var(--white); border-color: rgba(56,217,169,.4); }
+    .filter-btn.active { color: var(--navy); background: var(--teal); border-color: var(--teal); font-weight: 500; }
+    .project-card.hidden-by-filter { display: none; }
+
+    .cmdk-hint { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; color: var(--slate); border: 1px solid rgba(255,255,255,.12); border-radius: 6px; padding: 5px 8px; cursor: pointer; transition: var(--transition); background: transparent; margin-top: 16px; }
+    .cmdk-hint:hover { border-color: rgba(56,217,169,.4); color: var(--white); }
+    .cmdk-hint kbd { font-family: var(--font-mono); background: rgba(255,255,255,.08); border-radius: 3px; padding: 1px 5px; font-size: 10px; }
+
+    .cmdk-overlay { position: fixed; inset: 0; background: rgba(4,7,14,.72); backdrop-filter: blur(3px); z-index: 10000; display: none; align-items: flex-start; justify-content: center; padding-top: 12vh; }
+    .cmdk-overlay.open { display: flex; }
+    .cmdk-box { width: min(560px, 90vw); background: var(--navy-light); border: 1px solid rgba(56,217,169,.25); border-radius: 12px; box-shadow: 0 24px 60px rgba(0,0,0,.5); overflow: hidden; }
+    .cmdk-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,.08); padding: 16px 18px; color: var(--white); font-family: var(--font-body); font-size: 15px; outline: none; }
+    .cmdk-input::placeholder { color: var(--slate); }
+    .cmdk-results { max-height: 320px; overflow-y: auto; padding: 8px; }
+    .cmdk-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; color: var(--slate-light); font-size: 14px; }
+    .cmdk-item .cmdk-tag { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--teal); text-transform: uppercase; }
+    .cmdk-item.active, .cmdk-item:hover { background: var(--teal-glow); color: var(--white); }
+
     .cursor-glow { position: fixed; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(56,217,169,.08) 0%, transparent 70%); pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: left .12s, top .12s; }
     .availability { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--teal); margin-bottom: 20px; }
     .availability-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: pulse 2.4s ease-in-out infinite; }
@@ -290,18 +317,23 @@
     <div class="sidebar-top">
       <div class="availability"><span class="availability-dot"></span>Available for opportunities</div>
       <h1 class="name">Omar<br>Tawfik</h1>
-      <p class="title">Labor Economist &amp; Data Scientist</p>
-      <p class="tagline">I build data pipelines, forecasting models, and AI systems that turn complex datasets into decisions.</p>
+      <p class="title">Data Scientist — Causal Inference &amp; Forecasting</p>
+      <p class="tagline">I build forecasting models, causal inference platforms, and applied AI systems that turn complex data into high-stakes decisions.</p>
       <nav class="nav">
         <a href="#about" class="active"><span class="nav-line"></span>About</a>
         <a href="#experience"><span class="nav-line"></span>Experience</a>
         <a href="#projects"><span class="nav-line"></span>Projects</a>
         <a href="#skills"><span class="nav-line"></span>Skills</a>
+        <a href="#education"><span class="nav-line"></span>Education</a>
       </nav>
-      <a class="resume-btn" href="./Omar_Tawfik_Resume.pdf" download target="_blank" rel="noopener noreferrer" aria-label="Download resume (PDF)">
+      <a class="resume-btn" href="./Omar_Tawfik_Resume.pdf" download="Omar_Tawfik_Resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Download resume (PDF)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Resume
       </a>
+      <button class="cmdk-hint" id="cmdkTrigger" type="button" aria-label="Open quick navigation">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        Quick nav <kbd>&#8984;K</kbd>
+      </button>
     </div>
     <div class="socials">
       <a href="https://github.com/omartawfik7" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
@@ -320,9 +352,28 @@
 
     <section id="about" class="fade-in">
       <div class="section-label">About</div>
-      <p>I'm a <strong>Data Scientist and Labor Economist</strong> at the DC Government, where I turn complex workforce data into decisions — reducing projected fiscal exposure by <strong>$9M</strong> and modeling compensation risk across 37,000 employees through causal inference, forecasting, and Monte Carlo simulation.</p>
-      <p>Before that, I built production ML systems at <strong>Booz Allen Hamilton</strong> — a fraud detection engine, a 10x productivity ETL overhaul on Azure, and a Salesforce redesign that added capacity for 5,000 veterans monthly. I move comfortably across the full stack: <strong>pipeline architecture, predictive modeling, NLP, RAG systems, and executive-ready dashboards</strong>.</p>
+      <p>I'm a <strong>Data Scientist</strong> at the DC Government's Office of Labor Relations &amp; Collective Bargaining, where I turn complex workforce data into decisions — quantifying <strong>$31M</strong> in potential settlement exposure across a <strong>26,000+ person workforce</strong> through regression, cross-validated statistical modeling, and probabilistic (P5–P95) forecasting.</p>
+      <p>Before that, I built production ML systems at <strong>Booz Allen Hamilton</strong> — a fraud detection engine, a 10x productivity ETL overhaul on Azure, and a Salesforce redesign that added capacity for 5,000 veterans monthly. I move comfortably across the full stack: <strong>causal inference, time-series forecasting, RAG/LLM systems, ETL pipeline architecture, and executive-ready dashboards</strong>.</p>
       <p>What I care about: shipping systems that actually get used, analyses that hold up under scrutiny, and translating hard problems into clear answers for the people making decisions.</p>
+
+      <div class="stat-strip" data-counters>
+        <div class="stat-chip">
+          <div class="stat-num" data-counter data-value="31" data-prefix="$" data-suffix="M">0</div>
+          <div class="stat-label">Exposure Quantified</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-num" data-counter data-value="26" data-suffix="K+">0</div>
+          <div class="stat-label">Workforce Modeled</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-num" data-counter data-value="4" data-decimals="1" data-suffix="/4.0">0</div>
+          <div class="stat-label">MS Data Science GPA</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-num" data-counter data-value="4" data-suffix="+ yrs">0</div>
+          <div class="stat-label">Applied ML Experience</div>
+        </div>
+      </div>
     </section>
 
     <section id="experience" class="fade-in">
@@ -330,10 +381,10 @@
 
       <details class="exp-item" open>
         <summary>
-          <span class="exp-date">Jan 2026 — Present</span>
+          <span class="exp-date">2026 — Present</span>
           <div class="exp-summary-main">
-            <div class="exp-role">Labor Economist / Data Scientist</div>
-            <div class="exp-company">DC Government — Office of Labor Relations &amp; Collective Bargaining</div>
+            <div class="exp-role">Data Scientist</div>
+            <div class="exp-company">Office of Labor Relations &amp; Collective Bargaining (OLRCB)</div>
           </div>
           <span class="exp-toggle" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
@@ -342,14 +393,13 @@
         <div class="exp-content-wrap">
           <div class="exp-content">
             <ul class="exp-desc">
-              <li>Analyze labor market trends, wages, and employee benefits using econometrics and financial modeling to support compensation and workforce policy decisions.</li>
-              <li>Build forecasting, machine learning, and time-series models to evaluate employment trends and assess budgetary impact of salary adjustments, COLA, and benefit changes.</li>
-              <li>Lead compensation benchmarking and pay-equity analyses using large labor datasets to inform collective bargaining strategies.</li>
-              <li>Design and maintain interactive Tableau and Power BI dashboards translating complex economic insights into executive-ready guidance.</li>
-              <li>Automate labor-data pipelines using Python, SQL, and Spark to significantly accelerate insight delivery and improve analytical accuracy.</li>
-              <li>Partner with HR, finance, and policy teams to develop data-driven recommendations on compensation structures and workforce sustainability.</li>
+              <li>Quantified <strong>$31M</strong> in potential settlement liability for a <strong>26,000+ person workforce</strong> by building a compensation and back-pay prediction pipeline on structured payroll and demographic data — feature engineering, regression, and cross-validated statistical modeling to produce auditable, reproducible outputs.</li>
+              <li>Replaced single-point fiscal estimates with probabilistic exposure ranges (<strong>P5–P95</strong>) by engineering multi-year forecasting models across 5 negotiation strategies, combining time-series forecasting, regression, and stochastic sensitivity analysis for executive decision-making.</li>
+              <li>Directly informed negotiated outcomes for a 26,000+ employee workforce through labor economics and compensation analyses across <strong>10+ union matters</strong>, using Python and SQL.</li>
+              <li>Eliminated manual tracking gaps across <strong>20+ compliance obligations</strong> (CBAs, arbitration awards, PERB decisions) by architecting a centralized analytics and compliance framework with SQL-based data models and ML Ops practices.</li>
+              <li>Built an end-to-end causal inference platform (Python, Flask, SQL) combining three causal models (DiD, Synthetic Control, PSM) via inverse-variance weighting, validated with Monte Carlo simulations and Chart.js dashboards, to quantify municipal wage policy fiscal outcomes across P5–P95 confidence intervals.</li>
             </ul>
-            <div class="tag-list"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Time-Series</span><span class="tag">Econometrics</span><span class="tag">Tableau</span><span class="tag">Power BI</span><span class="tag">Spark</span></div>
+            <div class="tag-list"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Causal Inference</span><span class="tag">Time-Series</span><span class="tag">Monte Carlo</span><span class="tag">Flask</span><span class="tag">ML Ops</span></div>
           </div>
         </div>
       </details>
@@ -431,10 +481,17 @@
 
     <section id="projects" class="fade-in">
       <div class="section-label">Projects</div>
+      <div class="filter-bar" id="projectFilterBar">
+        <button class="filter-btn active" data-filter="all" type="button">All</button>
+        <button class="filter-btn" data-filter="causal-inference" type="button">Causal Inference</button>
+        <button class="filter-btn" data-filter="nlp" type="button">NLP</button>
+        <button class="filter-btn" data-filter="rag" type="button">RAG / LLM</button>
+        <button class="filter-btn" data-filter="data-viz" type="button">Data Viz</button>
+      </div>
       <div class="project-grid">
 
         <!-- Wage Simulator -->
-        <div class="project-card" id="featured-wage-sim">
+        <div class="project-card" id="featured-wage-sim" data-tags="causal-inference">
           <div class="project-top">
             <div class="project-icon">
               <svg viewBox="0 0 24 24">
@@ -470,7 +527,7 @@
         </div>
 
         <!-- ReviewGuard -->
-        <div class="project-card">
+        <div class="project-card" data-tags="nlp">
           <div class="project-top">
             <div class="project-icon">
               <svg viewBox="0 0 24 24">
@@ -587,7 +644,7 @@
         </div>
 
         <!-- DocMind -->
-        <div class="project-card">
+        <div class="project-card" data-tags="rag nlp">
           <div class="project-top">
             <div class="project-icon">
               <svg viewBox="0 0 24 24">
@@ -616,7 +673,7 @@
         </div>
 
         <!-- Tableau / Global Well-Being -->
-        <div class="project-card">
+        <div class="project-card" data-tags="data-viz">
           <div class="project-top">
             <div class="project-icon">
               <svg viewBox="0 0 24 24">
@@ -664,6 +721,20 @@
           <div class="skill-group-title">Tools &amp; Frameworks</div>
           <div class="tag-list"><span class="tag">Flask</span><span class="tag">Node.js</span><span class="tag">Git</span><span class="tag">Salesforce</span><span class="tag">PostgreSQL</span><span class="tag">SQLite</span><span class="tag">ChromaDB</span><span class="tag">PyPDF2</span><span class="tag">Tesseract OCR</span><span class="tag">HTML</span><span class="tag">Kafka</span></div>
         </div>
+      </div>
+    </section>
+
+    <section id="education" class="fade-in">
+      <div class="section-label">Education</div>
+      <div class="exp-item" style="padding: 18px 20px;">
+        <div class="exp-role">Master of Science, Data Science</div>
+        <div class="exp-company" style="margin-bottom: 2px;">University of Maryland, Smith School of Business</div>
+        <div class="exp-date" style="padding-top:0;">May 2026 &middot; GPA 4.0</div>
+      </div>
+      <div class="exp-item" style="padding: 18px 20px;">
+        <div class="exp-role">Bachelor of Science, Operations Management &amp; Business Analytics</div>
+        <div class="exp-company" style="margin-bottom: 2px;">University of Maryland</div>
+        <div class="exp-date" style="padding-top:0;">May 2023 &middot; GPA 3.9</div>
       </div>
     </section>
 
@@ -737,6 +808,23 @@
     requestAnimationFrame(step);
   };
 
+  const statStrip = document.querySelector('.stat-strip');
+  if (statStrip) {
+    const stripObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const counters = statStrip.querySelectorAll('[data-counter]');
+        counters.forEach(c => {
+          if (c.dataset.animated === 'true') return;
+          c.dataset.animated = 'true';
+          animateCounter(c);
+        });
+        stripObserver.disconnect();
+      });
+    }, { threshold: 0.4 });
+    stripObserver.observe(statStrip);
+  }
+
   const featured = document.getElementById('featured-wage-sim');
   if (featured) {
     const counterObserver = new IntersectionObserver((entries) => {
@@ -754,6 +842,111 @@
     counterObserver.observe(featured);
   }
 
+  // Project tag filtering
+  const filterBar = document.getElementById('projectFilterBar');
+  if (filterBar) {
+    const filterBtns = filterBar.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-grid > .project-card');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        projectCards.forEach(card => {
+          const tags = (card.dataset.tags || '').split(' ');
+          const show = filter === 'all' || tags.includes(filter);
+          card.classList.toggle('hidden-by-filter', !show);
+        });
+      });
+    });
+  }
+
+  // Command palette (Cmd/Ctrl+K quick nav)
+  (function () {
+    const items = [
+      { label: 'About', hint: 'Section', href: '#about' },
+      { label: 'Experience', hint: 'Section', href: '#experience' },
+      { label: 'Projects', hint: 'Section', href: '#projects' },
+      { label: 'Skills', hint: 'Section', href: '#skills' },
+      { label: 'Education', hint: 'Section', href: '#education' },
+      { label: 'Wage Policy Impact Simulation Engine', hint: 'Project', href: '#projects' },
+      { label: 'ReviewGuard — Fraud Detection', hint: 'Project', href: '#projects' },
+      { label: 'DocMind — RAG Pipeline', hint: 'Project', href: '#projects' },
+      { label: 'Global Well-Being Analysis', hint: 'Project', href: '#projects' },
+      { label: 'Download Resume (PDF)', hint: 'Action', href: './Omar_Tawfik_Resume.pdf', download: true },
+      { label: 'Email Omar', hint: 'Contact', href: 'mailto:omaressam390@gmail.com' },
+      { label: 'GitHub', hint: 'Link', href: 'https://github.com/omartawfik7', external: true },
+      { label: 'LinkedIn', hint: 'Link', href: 'https://www.linkedin.com/in/omar-tawfik123/', external: true },
+    ];
+
+    const overlay = document.createElement('div');
+    overlay.className = 'cmdk-overlay';
+    overlay.innerHTML = `
+      <div class="cmdk-box">
+        <input class="cmdk-input" type="text" placeholder="Jump to a section, project, or link…" autocomplete="off" />
+        <div class="cmdk-results"></div>
+      </div>`;
+    document.body.appendChild(overlay);
+    const input = overlay.querySelector('.cmdk-input');
+    const results = overlay.querySelector('.cmdk-results');
+    let activeIndex = 0;
+    let filtered = items;
+
+    function render() {
+      results.innerHTML = filtered.map((item, i) => `
+        <div class="cmdk-item ${i === activeIndex ? 'active' : ''}" data-index="${i}">
+          <span>${item.label}</span>
+          <span class="cmdk-tag">${item.hint}</span>
+        </div>`).join('') || `<div class="cmdk-item">No matches</div>`;
+    }
+
+    function open() {
+      overlay.classList.add('open');
+      input.value = '';
+      filtered = items;
+      activeIndex = 0;
+      render();
+      setTimeout(() => input.focus(), 10);
+    }
+    function close() { overlay.classList.remove('open'); }
+    function go(item) {
+      if (!item) return;
+      close();
+      if (item.external || item.download) {
+        window.open(item.href, '_blank', 'noopener');
+      } else {
+        document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    document.getElementById('cmdkTrigger')?.addEventListener('click', open);
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        overlay.classList.contains('open') ? close() : open();
+      } else if (e.key === 'Escape') {
+        close();
+      }
+    });
+    input?.addEventListener('input', () => {
+      const q = input.value.toLowerCase();
+      filtered = items.filter(i => i.label.toLowerCase().includes(q));
+      activeIndex = 0;
+      render();
+    });
+    input?.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); activeIndex = Math.min(activeIndex + 1, filtered.length - 1); render(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); activeIndex = Math.max(activeIndex - 1, 0); render(); }
+      else if (e.key === 'Enter') { e.preventDefault(); go(filtered[activeIndex]); }
+    });
+    results.addEventListener('click', (e) => {
+      const el = e.target.closest('.cmdk-item');
+      if (!el) return;
+      go(filtered[Number(el.dataset.index)]);
+    });
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  })();
+
   const reviewguard = document.getElementById('reviewguard-metrics');
   if (reviewguard) {
     const rgObserver = new IntersectionObserver((entries) => {
@@ -763,4 +956,13 @@
         counters.forEach(c => {
           if (c.dataset.animated === 'true') return;
           c.dataset.animated = 'true';
-          animateCounter(c
+          animateCounter(c);
+        });
+        rgObserver.disconnect();
+      });
+    }, { threshold: 0.35 });
+    rgObserver.observe(reviewguard);
+  }
+</script>
+</body>
+</html>
